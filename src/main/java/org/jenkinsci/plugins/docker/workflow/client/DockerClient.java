@@ -74,7 +74,7 @@ public class DockerClient {
      */
     @SuppressFBWarnings(value="MS_SHOULD_BE_FINAL", justification="mutable for scripts")
     @Restricted(NoExternalUse.class)
-    public static int CLIENT_TIMEOUT = Integer.getInteger(DockerClient.class.getName() + ".CLIENT_TIMEOUT", 66); // TODO 2.4+ SystemProperties
+    public static int CLIENT_TIMEOUT = Integer.getInteger(DockerClient.class.getName() + ".CLIENT_TIMEOUT", 100); // TODO 2.4+ SystemProperties
 
     // e.g. 2015-04-09T13:40:21.981801679Z
     public static final String DOCKER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
@@ -171,7 +171,7 @@ public class DockerClient {
      * @param containerId The container ID.
      */
     public void stop(@Nonnull EnvVars launchEnv, @Nonnull String containerId) throws IOException, InterruptedException {
-        LaunchResult result = launch(launchEnv, false, "stop", "--time=1", containerId);
+        LaunchResult result = launch(launchEnv, false, "stop", "--time=10", containerId);
         rm(launchEnv, containerId);
     }
 
@@ -182,6 +182,7 @@ public class DockerClient {
      * @param containerId The container ID.
      */
     public void rm(@Nonnull EnvVars launchEnv, @Nonnull String containerId) throws IOException, InterruptedException {
+        launch(launchEnv, false, "rm", "-f", containerId);
     }
 
     /**
